@@ -1,0 +1,153 @@
+USE [DBProject]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_tblEnquiry]    Script Date: 11/2/2025 5:20:05 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:      Gauri Gaikwad
+-- Create date: 2025-10-02
+-- Description: CRUD operations for tblEnquiry 
+-- =============================================
+ALTER PROCEDURE [dbo].[sp_tblEnquiry]
+    @Action NVARCHAR(10),
+
+    @SrNo INT,
+    @EnquiryNo NCHAR(10),
+    @CustomerCode NCHAR(10),
+    @CustomerName NVARCHAR(100),
+    @Place NVARCHAR(20),
+    @RadiatorSize NVARCHAR(20),
+    @Width NVARCHAR(20),
+    @CD NVARCHAR(10),
+    @SheetThick NVARCHAR(50),
+    @Tins INT,
+    @Weight INT,
+    @HDG VARCHAR(50),
+    @Primer INT,
+    @MIO INT,
+    @PU_Tapecount INT,
+    @PaintShade VARCHAR(50),
+    @Total_DFT INT,
+    @Varnish VARCHAR(50),
+    @Pitch VARCHAR(20),
+    @Transportation NVARCHAR(50),
+    @TransportationCondition NVARCHAR(100),
+    @DeliverySchedule NVARCHAR(50),
+    @DrawingNo INT,
+    @Quantity INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF @Action = 'INSERT'
+    BEGIN
+       INSERT INTO dbo.tblEnquiry
+(
+    SrNo,
+    EnquiryNo,
+    CustomerCode,
+    CustomerName,
+    Place,
+    RadiatorSize,
+    Width,
+    CD,
+    SheetThick,
+    Tins,
+    Weight,
+    HDG,
+    Primer,
+    MIO,
+    PU_Tapecount,
+    PaintShade,
+    Total_DFT,
+    Varnish,
+    Pitch,
+    Transportation,
+    TransportationCondition,
+    DeliverySchedule,
+    DrawingNo,
+    Quantity
+)
+VALUES
+(
+    @SrNo,
+    @EnquiryNo,
+    @CustomerCode,
+    @CustomerName,
+    @Place,
+    @RadiatorSize,
+    @Width,
+    @CD,
+    @SheetThick,
+    @Tins,
+    @Weight,
+    @HDG,
+    @Primer,
+    @MIO,
+    @PU_Tapecount,
+    @PaintShade,
+    @Total_DFT,
+    @Varnish,
+    @Pitch,
+    @Transportation,
+    @TransportationCondition,
+    @DeliverySchedule,
+    @DrawingNo,
+    @Quantity
+);
+    END
+
+    ELSE IF @Action = 'UPDATE'
+    BEGIN
+       UPDATE dbo.tblEnquiry
+SET
+    EnquiryNo = @EnquiryNo,
+    CustomerCode = @CustomerCode,
+    CustomerName = @CustomerName,
+    Place = @Place,
+    RadiatorSize = @RadiatorSize,
+    Width = @Width,
+    CD = @CD,
+    SheetThick = @SheetThick,
+    Tins = @Tins,
+    Weight = @Weight,
+    HDG = @HDG,
+    Primer = @Primer,
+    MIO = @MIO,
+    PU_Tapecount = @PU_Tapecount,
+    PaintShade = @PaintShade,
+    Total_DFT = @Total_DFT,
+    Varnish = @Varnish,
+    Pitch = @Pitch,
+    Transportation = @Transportation,
+    TransportationCondition = @TransportationCondition,
+    DeliverySchedule = @DeliverySchedule,
+    DrawingNo = @DrawingNo,
+    Quantity = @Quantity
+WHERE
+    SrNo = @SrNo;
+
+    END
+
+    ELSE IF @Action = 'DELETE'
+    BEGIN
+        DELETE FROM tblEnquiry WHERE SrNo = @SrNo
+    END
+
+    ELSE IF @Action = 'SELECT'
+    BEGIN
+        SELECT * FROM tblEnquiry
+    END
+
+    ELSE IF @Action = 'SELECTBYID'
+    BEGIN
+        SELECT * FROM tblEnquiry WHERE SrNo = @SrNo
+    END
+
+    ELSE
+    BEGIN
+        RAISERROR('Invalid Action parameter. Use INSERT, UPDATE, DELETE, SELECT, SELECTBYID.', 16, 1)
+    END
+END

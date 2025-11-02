@@ -1,0 +1,91 @@
+USE [DBProject]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_tblCustomer]    Script Date: 11/2/2025 5:14:37 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:      Gauri Gaikwad
+-- Create date: 2025-10-02
+-- Description: CRUD operations for tblCustomer 
+-- =============================================
+ALTER PROCEDURE [dbo].[sp_tblCustomer]
+    @Action NVARCHAR(10), -- 'INSERT', 'UPDATE', 'DELETE', 'SELECT'
+    @SrNo INT,
+    @CustomerCode NCHAR(10),
+    @CustomerName NVARCHAR(100),
+    @Address NVARCHAR(200),
+    @CompanyMobileNo BIGINT,
+    @Website NVARCHAR(200),
+    @State NVARCHAR(50),
+    @Country NVARCHAR(50),
+    @Contact_Person NVARCHAR(50),
+    @MobileNo BIGINT ,
+    @Email NVARCHAR(50),
+    @RateContract NCHAR(10),
+    @GST NVARCHAR(50),
+    @PAN_NO NVARCHAR(20),
+    @Reg_Office NVARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF @Action = 'INSERT'
+    BEGIN
+        INSERT INTO tblCustomer (
+            SrNo, CustomerCode, CustomerName, Address, CompanyMobileNo,
+            Website, State, Country, Contact_Person, MobileNo,
+            Email, RateContract, GST, PAN_NO, Reg_Office
+        )
+        VALUES (
+            @SrNo, @CustomerCode, @CustomerName, @Address, @CompanyMobileNo,
+            @Website, @State, @Country, @Contact_Person, @MobileNo,
+            @Email, @RateContract, @GST, @PAN_NO, @Reg_Office
+        );
+    END
+
+    ELSE IF @Action = 'UPDATE'
+    BEGIN
+        UPDATE tblCustomer
+        SET
+            CustomerCode = @CustomerCode,
+            CustomerName = @CustomerName,
+            Address = @Address,
+            CompanyMobileNo = @CompanyMobileNo,
+            Website = @Website,
+            State = @State,
+            Country = @Country,
+            Contact_Person = @Contact_Person,
+            MobileNo = @MobileNo,
+            Email = @Email,
+            RateContract = @RateContract,
+            GST = @GST,
+            PAN_NO = @PAN_NO,
+            Reg_Office = @Reg_Office
+        WHERE SrNo = @SrNo;
+    END
+
+    ELSE IF @Action = 'DELETE'
+    BEGIN
+        DELETE FROM tblCustomer
+        WHERE SrNo = @SrNo;
+    END
+
+    ELSE IF @Action = 'SELECT'
+    BEGIN
+        IF @SrNo IS NULL
+        BEGIN
+            SELECT * FROM tblCustomer;
+        END
+        ELSE
+        BEGIN
+            SELECT * FROM tblCustomer WHERE SrNo = @SrNo;
+        END
+    END
+
+    ELSE
+    BEGIN
+        RAISERROR('Invalid Action. Use INSERT, UPDATE, DELETE, or SELECT.', 16, 1);
+    END
+END
